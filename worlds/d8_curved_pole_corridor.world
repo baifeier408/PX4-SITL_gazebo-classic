@@ -1,0 +1,291 @@
+<sdf version="1.5">
+  <world name="default">
+    
+    <include>
+      <uri>model://sun</uri>
+    </include>
+    
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+    <include>
+      <uri>model://asphalt_plane</uri>
+    </include>
+    <physics name="default_physics" default="0" type="ode">
+      <gravity>0 0 -9.8066</gravity>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>10</iters>
+          <sor>1.3</sor>
+          <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0.001</contact_surface_layer>
+        </constraints>
+      </ode>
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+      <magnetic_field>6.0e-6 2.3e-5 -4.2e-5</magnetic_field>
+    </physics>
+  
+    <model name="d8_curved_pole_00">
+      <static>true</static>
+      <pose>2.400 4.200 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_curved_pole_01">
+      <static>true</static>
+      <pose>2.200 5.000 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_curved_pole_02">
+      <static>true</static>
+      <pose>1.800 5.800 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_curved_pole_03">
+      <static>true</static>
+      <pose>1.300 6.600 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_curved_pole_04">
+      <static>true</static>
+      <pose>0.900 7.400 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_curved_pole_05">
+      <static>true</static>
+      <pose>0.800 8.200 1.75 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.08</radius>
+              <length>3.5</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.35 0.25 0.15 1</ambient>
+            <diffuse>0.45 0.32 0.18 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_left_building">
+      <static>true</static>
+      <pose>-3.500 13.000 2.000 0.000 0.000 0.000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.4 2.0 4.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.4 2.0 4.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.25 0.28 1</ambient>
+            <diffuse>0.45 0.45 0.50 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_right_building">
+      <static>true</static>
+      <pose>4.500 13.000 2.000 0.000 0.000 0.000</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>1.4 2.0 4.0</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>1.4 2.0 4.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.25 0.28 1</ambient>
+            <diffuse>0.45 0.45 0.50 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+
+    <model name="d8_delivery_marker">
+      <static>true</static>
+      <pose>0.400 14.800 0.030 0.000 0.000 0.000</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.8 0.8 0.04</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.6 0.1 1</ambient>
+            <diffuse>0.1 0.8 0.1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+  <plugin name="wind_plugin" filename="libgazebo_wind_plugin.so">
+      <frameId>base_link</frameId>
+      <robotNamespace />
+      <windVelocityMean>4.0</windVelocityMean>
+      <windVelocityMax>20.0</windVelocityMax>
+      <windVelocityVariance>0</windVelocityVariance>
+      <windDirectionMean>0 1 0</windDirectionMean>
+      <windDirectionVariance>0</windDirectionVariance>
+      <windGustStart>0</windGustStart>
+      <windGustDuration>0</windGustDuration>
+      <windGustVelocityMean>0</windGustVelocityMean>
+      <windGustVelocityMax>20.0</windGustVelocityMax>
+      <windGustVelocityVariance>0</windGustVelocityVariance>
+      <windGustDirectionMean>1 0 0</windGustDirectionMean>
+      <windGustDirectionVariance>0</windGustDirectionVariance>
+      <windPubTopic>world_wind</windPubTopic>
+    <actualWindLogPath>/home/lhc/uav_wind_ws/logs/d8_reference_route/d8_actual_world_wind_live.csv</actualWindLogPath></plugin></world>
+</sdf>

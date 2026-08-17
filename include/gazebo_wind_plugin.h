@@ -25,6 +25,7 @@
 
 #include <string>
 #include <random>
+#include <fstream>
 #include <gazebo/common/common.hh>
 #include <gazebo/common/Plugin.hh>
 #include <gazebo/gazebo.hh>
@@ -85,6 +86,45 @@ class GazeboWindPlugin : public WorldPlugin {
   /// \param[in] _info Update timing information.
   void OnUpdate(const common::UpdateInfo& /*_info*/);
 
+  // Callback for runtime wind command.
+  // The command is a wind velocity vector in Gazebo world frame, unit: m/s.
+  void WindCmdCallback(ConstVector3dPtr& msg);
+
+  // Callback for runtime wind mode command.
+  // Temporary Vector3d format:
+  //   x = mode, 0 step/hold, 1 ramp, 2 sine
+  //   y = duration in seconds
+  //   z = frequency in Hz for sine mode, reserved for other modes
+  void WindModeCallback(ConstVector3dPtr& msg);
+
+  // Callback for runtime sine wind amplitude.
+  // Temporary Vector3d format:
+  //   x = sine amplitude in wind_x, m/s
+  //   y = sine amplitude in wind_y, m/s
+  //   z = sine amplitude in wind_z, m/s
+  void WindSineAmpCallback(ConstVector3dPtr& msg);
+
+  // Callback for runtime random-step wind parameters.
+  // Temporary Vector3d format:
+  //   x = min random wind speed, m/s
+  //   y = max random wind speed, m/s
+  //   z = update period, s
+  void WindRandomParamsCallback(ConstVector3dPtr& msg);
+
+  // Callback for C2.5 three-axis random-step minimum wind vector.
+  // Temporary Vector3d format:
+  //   x = min wind_x, m/s
+  //   y = min wind_y, m/s
+  //   z = min wind_z, m/s
+  void WindRandomMinCallback(ConstVector3dPtr& msg);
+
+  // Callback for C2.5 three-axis random-step maximum wind vector.
+  // Temporary Vector3d format:
+  //   x = max wind_x, m/s
+  //   y = max wind_y, m/s
+  //   z = max wind_z, m/s
+  void WindRandomMaxCallback(ConstVector3dPtr& msg);
+
  private:
   /// \brief Pointer to the update event connection.
   event::ConnectionPtr update_connection_;
@@ -127,6 +167,87 @@ class GazeboWindPlugin : public WorldPlugin {
 
   transport::NodePtr node_handle_;
   transport::PublisherPtr wind_pub_;
+
+  // Runtime wind command subscriber.
+  transport::SubscriberPtr wind_cmd_sub_;
+
+  // C2.2 runtime wind mode subscriber.
+  transport::SubscriberPtr wind_mode_sub_;
+
+  // C2.3 runtime sine wind amplitude subscriber.
+  transport::SubscriberPtr wind_sine_amp_sub_;
+
+  // C2.4 runtime random-step wind parameter subscriber.
+  transport::SubscriberPtr wind_random_params_sub_;
+
+  // C2.5 runtime three-axis random-step wind min/max subscribers.
+  transport::SubscriberPtr wind_random_min_sub_;
+  transport::SubscriberPtr wind_random_max_sub_;
+
+  // Latest runtime wind command in Gazebo world frame, unit: m/s.
+  // Legacy C1 variable kept for compatibility with previous notes.
+  ignition::math::Vector3d wind_cmd_;
+
+  // C2.1 runtime wind command interpolation.
+  // The external command sets a target wind. The plugin internally interpolates
+  // from wind_cmd_current_ to wind_cmd_target_ using Gazebo simulation time.
+  ignition::math::Vector3d wind_cmd_target_{0.0, 0.0, 0.0};
+  ignition::math::Vector3d wind_cmd_current_{0.0, 0.0, 0.0};
+  ignition::math::Vector3d wind_cmd_ramp_start_{0.0, 0.0, 0.0};
+  double wind_cmd_ramp_start_time_{0.0};
+  double wind_cmd_ramp_duration_{2.0};
+  bool wind_cmd_ramp_active_{false};
+
+  // C2.2/C2.3/C2.4/C2.5/C2.6 runtime wind mode.
+  // 0 = step / hold
+  // 1 = ramp
+  // 2 = sine
+  // 3 = random_step_fixed_direction
+  // 4 = random_step_3axis
+  // 5 = random_walk_3axis
+  int wind_cmd_mode_{1};
+
+  // C2.4 random-step wind parameters.
+  ignition::math::Vector3d wind_random_direction_{0.0, 1.0, 0.0};
+  double wind_random_speed_min_{0.0};
+  double wind_random_speed_max_{5.0};
+  double wind_random_update_period_{3.0};
+  double wind_random_start_time_{0.0};
+  double wind_random_next_update_time_{0.0};
+  double wind_random_current_speed_{0.0};
+  unsigned int wind_random_seed_{42};
+  std::mt19937 wind_random_gen_{42};
+  bool wind_random_active_{false};
+
+  // C2.5 three-axis random-step wind ranges.
+  // Used by mode=4 random_step_3axis.
+  // Also used as clamp bounds by mode=5 random_walk_3axis.
+  ignition::math::Vector3d wind_random_min_{-3.0, 2.0, -0.5};
+  ignition::math::Vector3d wind_random_max_{ 3.0, 8.0,  0.5};
+
+  // C2.6 three-axis random-walk wind parameters.
+  // Used by mode=5 random_walk_3axis.
+  double wind_random_walk_delta_xy_{0.4};
+  double wind_random_walk_delta_z_{0.08};
+  double wind_random_walk_duration_{30.0};
+  ignition::math::Vector3d wind_random_walk_target_{0.0, 5.0, 0.0};
+
+  // C2.3 sine wind parameters.
+  ignition::math::Vector3d wind_sine_mean_{0.0, 0.0, 0.0};
+  ignition::math::Vector3d wind_sine_amp_{0.0, 0.0, 0.0};
+  double wind_sine_start_time_{0.0};
+  double wind_sine_frequency_hz_{0.1};
+  bool wind_sine_active_{false};
+
+  // C2.1.1 actual published wind logging.
+  // This records the final wind vector published by the plugin, regardless of
+  // whether the wind is generated from SDF parameters, runtime wind_cmd, or
+  // future mode-based wind generators.
+  std::string wind_actual_log_path_{"/tmp/gazebo_wind_actual_log.csv"};
+  std::ofstream wind_actual_log_;
+
+  // If true, use runtime wind command instead of SDF/random/gust wind.
+  bool use_external_wind_cmd_{false};
 
   physics_msgs::msgs::Wind wind_msg;
 };
